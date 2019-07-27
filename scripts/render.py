@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import os
 import re
@@ -187,7 +188,7 @@ def render_links(templates_dir, summary):
 
     return links
 
-def render(assets_dir='assets', templates_dir='templates'):
+def render(assets_dir='assets', templates_dir='templates', out_dir='.'):
     summary = load_all(assets_dir)
     navigation = render_navigation(templates_dir, summary)
     lead = render_general(templates_dir, summary, 'lead')
@@ -208,7 +209,8 @@ def render(assets_dir='assets', templates_dir='templates'):
         'navigation': navigation,
     })
 
-    with open('index.html', 'w') as f:
+    with open(os.path.join(out_dir, 'index.html'), 'w') as f:
+        f.write('<!--{}-->\n'.format(datetime.now()))
         f.write(index)
 
 
@@ -217,6 +219,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--assets_dir', type=str, default='assets')
     parser.add_argument('-t', '--templates_dir', type=str, default='templates')
+    parser.add_argument('-o', '--out_dir', type=str, default='../')
     args = parser.parse_args()
 
-    render(args.assets_dir, args.templates_dir)
+    render(args.assets_dir, args.templates_dir, args.out_dir)

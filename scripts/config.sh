@@ -1,0 +1,2 @@
+GITHUB_USER=Lioscro
+GITHUB_REPO=info
